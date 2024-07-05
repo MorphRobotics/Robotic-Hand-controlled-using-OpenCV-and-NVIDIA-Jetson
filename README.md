@@ -23,7 +23,7 @@ pip install mediapipe
 pip install opencv-python
 pip install pyFirmata
 ```
-# First upload the Arduino script StandardFirmata.ino and then upload the 5fingerservocontrol.ino code
+Now upload the Arduino script StandardFirmata.ino and then upload the 5fingerservocontrol.ino code
 
 # Now in your terminal run the python script for OpenCV servo control
 
@@ -31,6 +31,36 @@ pip install pyFirmata
 python3 cv_servocontrol.py
 ```
 ![Hand Tracking_screenshot_04 07 2024](https://github.com/MorphRobotics/Robotic-Hand-controlled-using-OpenCV-and-NVIDIA-Jetson/assets/104451879/00c6285d-079b-4422-bfb2-bbf58d39aa18)
+
+# Explaining the Python code 
+```
+  if lmList:
+            fingers = [4, 8, 12, 16, 20]  # Thumb, Index, Middle, Ring, Pinky
+            positions = []
+            wrist_x, wrist_y = lmList[0][1], lmList[0][2]  # Get wrist coordinates
+
+            for i, finger_id in enumerate(fingers):
+                x, y = lmList[finger_id][1], lmList[finger_id][2]  # Get x and y coordinates of the finger
+                cv2.circle(image, (x, y), 15, (255, 255, 255))  # Draw a circle at the fingertip
+
+                # Draw a line from the fingertip to the wrist
+                cv2.line(image, (wrist_x, wrist_y), (x, y), (255, 0, 0), 3)
+
+                # Calculate the distance between the fingertip and the wrist
+                length = math.hypot(x - wrist_x, y - wrist_y)
+
+                if i == 0:  # Special case for the thumb
+                    position = map_value(length, 50, 220, 180, 0)  # Invert the max position
+                else:
+                    position = map_value(length, 50, 220, 0, 180)
+
+                positions.append(position)  # Append the position to the list
+                cv2.putText(image, str(position), (50 + 100 * i, 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0))  # Display the position
+
+            # Send positions to Arduino
+            data = ','.join(map(str, positions)) + '\n'  # Create a comma-separated string of positions
+            arduino.write(data.encode())  # Send the data to Arduino
+```
 
 # Potential applications for this project include
 
