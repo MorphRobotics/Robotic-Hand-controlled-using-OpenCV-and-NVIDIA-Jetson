@@ -141,11 +141,11 @@ with mp_hands.Hands(
                     lmList.append([id, cx, cy])  # Append landmark id and coordinates to the list
 ```
 
-This code initializes the necessary libraries and hardware for tracking hand movements and communicating the data to an Arduino. It imports the required libraries (OpenCV for image processing, MediaPipe for hand tracking, and serial for Arduino communication), sets up a serial connection with an Arduino, and initializes the MediaPipe hand tracking utilities. The webcam is configured to capture frames of a specified width and height.
+This code initializes the necessary libraries and hardware for tracking hand movements and communicating the data to the Arduino. It imports the required libraries (OpenCV for image processing, MediaPipe for hand tracking, and serial for Arduino communication), sets up a serial connection with the Arduino, and initializes the MediaPipe hand tracking utilities. The webcam is configured to capture frames of a specified width and height.
 
 A function `map_value` is defined to map a value from one range to another. The main logic for hand tracking is enclosed in a `with` statement that initializes the MediaPipe `Hands` solution with specified parameters for model complexity, detection confidence, and tracking confidence.
 
-Inside a `while` loop, the code captures frames from the webcam, converts them from BGR to RGB, and processes them to detect hand landmarks. If hand landmarks are detected, the landmarks and hand connections are drawn on the image using customized styles. The landmarks' normalized coordinates are converted to pixel values and stored in a list `lmList`. The loop continues capturing and processing frames as long as the webcam is open, allowing for real-time hand tracking and data collection for further processing or communication with the Arduino.
+Inside the `while` loop, the code captures frames from the webcam, converts them from BGR to RGB, and processes them to detect hand landmarks. If hand landmarks are detected, the landmarks and hand connections are drawn on the image using customized styles. The landmarks' normalized coordinates are converted to pixel values and stored in a list `lmList`. The loop continues capturing and processing frames as long as the webcam is open, allowing for real-time hand tracking and data collection for further processing or communication with the Arduino.
 
 ``` python
   if lmList:
