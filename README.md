@@ -38,3 +38,6 @@ Potential applications for this project include
 2. Accessibility Tools: Enable people with disabilities to control devices, computers, or other assistive technologies using hand movements
 3. Teleoperation: Control robots remotely using hand gestures, improving precision and intuitiveness for applications like surgery or hazardous material handling
 4. Skill training: Use hand tracking for training in skills that require precise hand movements, such as surgical training or musical instrument learning.
+
+FULL DEMO ON YOUTUBE: https://www.youtube.com/watch?v=gdE6s4S67Qc&t=4s&ab_channel=DozieUbosi
+
