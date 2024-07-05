@@ -32,6 +32,56 @@ python3 cv_servocontrol.py
 ```
 ![Hand Tracking_screenshot_04 07 2024](https://github.com/MorphRobotics/Robotic-Hand-controlled-using-OpenCV-and-NVIDIA-Jetson/assets/104451879/00c6285d-079b-4422-bfb2-bbf58d39aa18)
 
+# Explaining the Arduino Code
+``` C
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+#include <Firmata.h>
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+#define SERVOMIN  150 // Minimum pulse length count (out of 4096)
+#define SERVOMAX  600 // Maximum pulse length count (out of 4096)
+
+```
+This code snippet includes necessary libraries (`Wire.h`, `Adafruit_PWMServoDriver.h`, and `Firmata.h`) for communication and servo control on an Arduino. It initializes an Adafruit_PWMServoDriver object named `pwm` for managing PWM signals to control servos. Constants `SERVOMIN` and `SERVOMAX` define the minimum and maximum PWM values (out of 4096) corresponding to servo positions from 0 to 180 degrees. These settings are essential for configuring and controlling servos precisely using PWM signals on the Arduino platform.
+
+```C
+void setup()
+{
+  Serial.begin(57600);
+  pwm.begin();
+  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+}
+```
+This `setup()` function initializes the Arduino environment and prepares it for controlling servos using PWM signals. Firstly, `Serial.begin(57600);` initializes serial communication at a baud rate of 57600, enabling communication between the Arduino and external devices such as a computer or a Jetson Orin Nano. Next, `pwm.begin();` initializes the `pwm` object, which is an instance of the `Adafruit_PWMServoDriver` class. This prepares the Arduino to manage PWM signals required for controlling multiple servos connected to the Adafruit PWM Servo Driver. Lastly, `pwm.setPWMFreq(60);` sets the PWM frequency to 60 Hz. This frequency is suitable for analog servos, ensuring they receive updates at a rate that allows for smooth and precise movement. Together, these steps configure the Arduino to communicate over serial and control servos via PWM, setting up the foundation for tthe servo control task.
+
+```C
+void loop()
+{
+  if (Serial.available()) {
+    String data = Serial.readStringUntil('\n');
+    int servoPos[5];
+    int index = 0;
+    char *token = strtok(data.c_str(), ",");
+
+    while (token != NULL) {
+      servoPos[index] = atoi(token);
+      index++;
+      token = strtok(NULL, ",");
+    }
+
+    for (int i = 0; i < 5; i++) {
+      int pulseLength = map(servoPos[i], 0, 180, SERVOMIN, SERVOMAX);
+      pwm.setPWM(i, 0, pulseLength);
+    }
+  }
+}
+```
+The loop() function continuously checks for incoming data on the Arduino's serial port (Serial.available()). When data is detected, it reads the entire string until a newline character ('\n') is encountered using Serial.readStringUntil('\n') and stores it in a string variable data. This string is then parsed into individual servo positions, assuming up to 5 servos, using the strtok() function to split the string by commas (','). Each token, representing a servo position in degrees, is converted from a string to an integer (atoi(token)) and stored in an array servoPos.
+
+Next, for each position in the servoPos array, the code calculates a corresponding PWM pulse length using the map() function. This function scales the servo position (ranging from 0 to 180 degrees) to a PWM range defined by SERVOMIN (minimum pulse length) and SERVOMAX (maximum pulse length), ensuring accurate servo control. Finally, the adjusted pulse lengths are sent to the Adafruit PWM Servo Driver (pwm.setPWM()), which in turn adjusts the connected servos accordingly. This setup allows the Arduino to respond in real-time to incoming commands, enabling precise and dynamic control of multiple servos based on external instructions received via serial communication.
+
 # Explaining the Python code 
 ``` python
 import cv2
