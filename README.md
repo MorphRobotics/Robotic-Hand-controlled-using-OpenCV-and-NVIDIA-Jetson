@@ -20,7 +20,7 @@ pip install mediapipe
 pip install opencv-python
 pip install pyFirmata
 ```
-First upload the Arduini script StandardFirmata.ino and then upload the 5fingerservocontrol.ino code
+First upload the Arduino script StandardFirmata.ino and then upload the 5fingerservocontrol.ino code
 
 Now in your terminal run the python script for OpenCV servo control
 
