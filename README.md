@@ -27,3 +27,4 @@ Now in your terminal run the python script for OpenCV servo control
 ```
 python3 cv_servocontrol.py
 ```
+![Hand Tracking_screenshot_04 07 2024](https://github.com/MorphRobotics/Robotic-Hand-controlled-using-OpenCV-and-NVIDIA-Jetson/assets/104451879/00c6285d-079b-4422-bfb2-bbf58d39aa18)
